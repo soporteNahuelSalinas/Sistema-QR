@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 import csv
 import json
+import shutil
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -10,12 +11,29 @@ from generate_product_cards import generate_cards
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
+def limpiar_carpetas():
+    carpetas_a_limpiar = ["qrcodes-manuales", "output_pdfs"]
+    
+    for carpeta in carpetas_a_limpiar:
+        if os.path.exists(carpeta):
+            for archivo in os.listdir(carpeta):
+                archivo_path = os.path.join(carpeta, archivo)
+                try:
+                    if os.path.isfile(archivo_path):
+                        os.remove(archivo_path)  # Borra archivos
+                    elif os.path.isdir(archivo_path):
+                        shutil.rmtree(archivo_path)  # Borra carpetas dentro si hay
+                except Exception as e:
+                    print(f"Error eliminando {archivo_path}: {e}")
+
 # Ruta para la página principal
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         file = request.files['file']
         if file and file.filename.endswith('.csv'):
+            # Limpia las carpetas de QR y PDF
+            limpiar_carpetas()
             # Leer el archivo CSV y extraer los IDs de productos
             ids_productos = []
             csv_file = csv.DictReader(file.stream.read().decode('utf-8').splitlines(), delimiter=';')
