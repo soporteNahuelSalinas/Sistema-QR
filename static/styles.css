@@ -1,0 +1,41 @@
+:root{
+    --fuente: poppins;
+    --colorTextBtn: black;
+}
+
+*{
+    font-family: var(--fuente);
+    color: aliceblue;
+}
+
+body{
+    background-color: rgb(58, 69, 167);
+    letter-spacing: 1px;
+}
+
+main{
+    width: fit-content;
+    justify-content: center;
+    margin: auto;
+    text-align: center;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+}
+ 
+button{
+    color: var(--colorTextBtn);
+    border: none;
+    border-radius: 3px;
+    margin-block: .2em;
+    width: 100%;
+    max-width: 25em;
+    padding-block: .4em;
+    font-weight: 500;
+}
+
+input #file-upload-button{
+    font-family: var(--fuente);
+}
